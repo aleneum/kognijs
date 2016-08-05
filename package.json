@@ -1,0 +1,32 @@
+{
+  "name": "kognijs",
+  "version": "0.1.0",
+  "description": "KogniHome Web Toolkit",
+  "main": "src/ui.js",
+  "files": [
+      "src/*.js"
+  ],
+  "dependencies": {
+    "kognijs-animate":"*",
+    "kognijs-rsb":"*",
+    "traverse":"*",
+    "xml2js":"*",
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "browser-sync": "*",
+    "browserify": "*",
+    "lodash": "*",
+    "gulp": "*",
+    "gulp-uglify": "*",
+    "resolve": "*",
+    "vinyl-source-stream": "*",
+    "vinyl-buffer": "*",
+    "mocha": "*",
+    "chai": "*",
+    "sinon": "*",
+    "sinon-chai": "*",
+    "gulp-mocha": "*",
+    "vue": "*"
+  }
+}

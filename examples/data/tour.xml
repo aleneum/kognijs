@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+ <rsb>
+   <host>
+    localhost:8181
+   </host>
+   <prefix>
+     /kognichef/io/display
+   </prefix>
+   <pointing>
+     <path>pointing</path>
+     <type>rst.math.Vec2DFloat</type>
+     <componentList>
+      <component>testButton</component>
+     </componentList>
+   </pointing>
+   <viewmodel>
+     <temperature type="integer" scope="/temperature" />
+     <pointing type="rst.math.Vec2DFloat" bidirectional="true" />
+     <ready type="bool" />
+     <content>
+       <text type="string" />
+       <time type="integer" />
+     </content>
+     <currentstep type="string" />
+     <videurl type="string" bidirectional="true"/>
+   </viewmodel>
+   <canvasList>
+    <canvas>#canvasArea</canvas>
+   </canvasList>
+   <contentList>
+     <content>#contentArea</content>
+   </contentList>
+ </rsb>
+ </config>

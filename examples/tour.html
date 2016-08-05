@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Kogni.JS - UI</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/tour.css">
+  <script src="vendor.js"></script>
+  <script src="kognijs.tour.js"></script>
+</head>
+
+<xmp theme="united" style="display:none;">
+  ### Basic Usage
+
+  This is all the js code required to set up the basic user interface helpers. Even though kognijs.ui can be configured
+  programmatically, it is recommended to use the configuration.xml to do so.
+
+
+  ```javascript
+  model = {} # empty model
+  var UI = require('./ui', model);
+  ui = new UI('path/to/config.xml');
+  # init will also connect to rsb if the requires parameters can be found in the xml file
+  ui.init(function() {
+    # callback; do all the things!
+  })
+  ```
+
+  Also make sure that your ```crossbar``` and ```asyncio-rsb-bridge``` are running.
+  <div id="rsbIsConnected">
+    <div style="color:red; font-size: 1.5em; margin-bottom:5px;">RSB is not connected!</div>
+    If you have no valid configuration, you can use the following minimal example and save it as ```tour.xml```
+    in your server's data folder. See ```examples\data\tour.xml``` for more details.
+  </div>
+
+  ### XML Properties
+
+  * `<rsb>`-- this block contains all the information required for UI to provide remote features. All the following elements are children of this root node.
+  * `<host>`-- configures where the rsb-wamp-bridge can be found
+    * e.g. `<host>localhost:8181<host>`
+  * `<kind><group><id>` -- this set defines the scope where all components of the instance can be found
+    * e.g `<kind>io</kind><group>display</group><id>screen</id>`
+  * `<pointing>` (optional) -- if present, enables remote pointing
+    * `<scope>` -- defines the scope where pointing messages arrive
+    * `<type>` -- rst type of the pointing message
+  * `<viewmodel>` (optional) -- binds rsb scopes to model properties with the same name or creates new model properties.
+    * `<name_of_property type="rst_type" scope="optional_scope" bidirectional="optional_scope_or_boolean" />`
+      * type -- type of the rst message
+      * scope (optional) -- if not set, scope will be /kind/group/id/model/name_of_property
+      * bidirectional -- if not set, changes in the viewmodel will not be published; if `true` the incoming scope will be used to publish changes; any other value will be interpreted as outgoing scope.
+
+
+  ### Relative Scoping
+  To reduce redundancy, UI handles relative scopes for you. If a scope starts with a slash (/) it is handles as an _absolute_ scope and will be created exactly according to the configuration. Else, it will be considered a relative scope and automatically attached to /kind/group/id. A relative scope `foo` will create a listener on scope `/kind/group/id/foo` or for the previously mentioned example `/io/display/screen/foo`
+
+
+ ### Programmatic Approach
+ Pointing, RemoteCanvas and RemoteContent can also be instantiated dynamically.
+ ```javascript
+   ui.enableRemoteContent('#contentArea');
+   ui.enableRemoteCanvas('#canvasArea');
+   ui.enablePointing('clickableElementOrArea', onClickedCallback);
+ ```
+
+ ### Remote HTML Content
+ <div id="contentArea">
+   Just some text
+ </div>
+
+ ### Remote Canvas (via JS)
+ <div id="canvasArea"></div>
+
+ ### KogniJS + Vue = MVVM Sweetness
+ <div id="vueArea">
+
+   <h4> Dynamic Class Assignment </h4>
+   <div id="tempStatus" v-bind:class="{ 'cold': temperature < 0, 'mid': (temperature >= 0) & (temperature < 35), 'hot': temperature > 35 }">Temp Status</div>
+
+   <h4> Conditional Rendering </h4>
+   <img src="data/ready.png" v-if="ready" />
+   <img src="data/close.png" v-else />
+
+   <h4> Model Inspector </h4>
+   <div id="vueAreaTable"></div>
+ </div>
+
+</xmp>
+
+
+
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script type="text/javascript">
+  function onLoad(ui, $, Vue) {
+    ui.init(function() {
+      window.ui = ui;
+      console.log(ui);
+      var rsbStatus = $("#rsbIsConnected");
+      rsbStatus.remove();
+      createInspector({el: "#vueAreaTable", data: ui.model});
+      var vue = new Vue({el: "#vueArea", data: ui.model});
+      console.log('initialized')
+    })
+  }
+</script>
+</html>

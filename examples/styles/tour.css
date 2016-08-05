@@ -1,0 +1,28 @@
+#canvasArea {
+  width: 640px;
+  height: 480px;
+  background-color: #ddd;
+}
+
+#tempStatus {
+  text-align: center;
+}
+
+.cold  {
+  background-color: darkblue;
+  color: cornflowerblue;
+}
+
+.mid {
+  background-color: #FFFFAA;
+  color: #ff8a00;
+}
+
+.hot {
+  background-color: darkred;
+  color: palevioletred;
+}
+
+table, th, td {
+   border: 1px solid black;
+}
