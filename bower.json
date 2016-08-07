@@ -4,9 +4,7 @@
   "description": "KogniHome Web Toolkit",
   "main": "dist/kognijs.min.js",
   "files": [
-      "examples/*.html.",
-      "src/*.js",
-      "gulpfile.js"
+      "src/*.js"
   ],
   "ignore": [
     "node_modules"
