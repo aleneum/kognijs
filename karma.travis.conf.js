@@ -1,4 +1,6 @@
-istanbul = require('browserify-istanbul');
+var istanbul = require('browserify-istanbul');
+var proxyquire = require('proxyquireify');
+var browserifyOptional = require('browserify-optional');
 
 module.exports = function(config) {
   config.set({
@@ -18,9 +20,9 @@ module.exports = function(config) {
     },
     browserify: {
       debug: true,
-      transform: [istanbul({
-        ignore: ['**/node_modules/**'],
-      })],
+      transform: [istanbul({ignore: ['**/node_modules/**'],}),
+                  browserifyOptional],
+      plugin: ['proxyquire-universal']
     },
     reporters: ['coverage', 'coveralls'],
     coverageReporter: {
