@@ -2,20 +2,22 @@
   "name": "kognijs",
   "version": "0.1.1",
   "description": "KogniHome Web Toolkit",
+  "repository": "https://github.com/aleneum/kognijs",
+  "license" : "MIT",
   "main": "src/ui.js",
   "files": [
       "src/*.js"
   ],
   "dependencies": {
-    "kognijs-animate":"*",
-    "kognijs-rsb":"*",
+    "kognijs-rsb":"../kognijs-rsb",
+    "kognijs-animate": "../kognijs-animate",
     "traverse":"*",
-    "xml2js":"*",
-    "jquery": "*"
+    "xml2js":"*"
   },
   "devDependencies": {
     "browser-sync": "*",
     "browserify": "*",
+    "browserify-optional": "*",
     "lodash": "*",
     "gulp": "*",
     "gulp-rename": "*",
@@ -35,6 +37,10 @@
     "browserify-istanbul": "*",
     "karma-coverage": "*",
     "karma-coveralls": "*",
+    "watchify": "*",
+    "proxyquireify": "*",
+    "proxyquire": "*",
+    "proxyquire-universal": "*",
     "vue": "*"
   }
 }

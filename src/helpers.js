@@ -16,7 +16,7 @@ Helper.prototype.mangleScope = function(scope) {
 };
 
 // http://stackoverflow.com/questions/1366127/instantiate-a-javascript-object-using-a-string-to-define-the-class-name
-exports.stringToFunction = function(str) {
+/*exports.stringToFunction = function(str) {
   var arr = str.split(".");
 
   var fn = (window || this);
@@ -29,4 +29,4 @@ exports.stringToFunction = function(str) {
   }
 
   return  fn;
-};
+};*/

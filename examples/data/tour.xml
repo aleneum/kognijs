@@ -16,7 +16,7 @@
    </pointing>
    <viewmodel>
      <temperature type="integer" scope="/temperature" />
-     <pointing type="rst.math.Vec2DFloat" bidirectional="true" />
+     <pointing type="rst.math.Vec2DFloat" bidirectional="/rst/math/2D" />
      <ready type="bool" />
      <content>
        <text type="string" />
@@ -26,10 +26,20 @@
      <videurl type="string" bidirectional="true"/>
    </viewmodel>
    <canvasList>
-    <canvas>#canvasArea</canvas>
+    <canvas>canvasArea</canvas>
    </canvasList>
    <contentList>
-     <content>#contentArea</content>
+     <content>contentArea</content>
    </contentList>
  </rsb>
+  <projection>
+    <parent>contentArea</parent>
+  </projection>
+  <widgetList>
+    <widget>
+      <scope>/example/scope</scope>
+      <type>base/examples/data/widget.xml</type>
+      <value>string</value>
+    </widget>
+  </widgetList>
  </config>

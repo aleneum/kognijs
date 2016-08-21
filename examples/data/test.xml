@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+ <rsb>
+   <prefix>
+     /test/scope
+   </prefix>
+   <componentList>
+    <component>button1</component>
+    <component>button2</component>
+    <component>button3</component>
+    <component>button4</component>
+   </componentList>
+   <viewmodel>
+     <componentList>
+        <component>button1</component>
+     </componentList>
+     <temperature type="integer" scope="/temperature" />
+     <pointing type="rst.math.Vec2DFloat" bidirectional="true" />
+     <ready type="bool" />
+     <content>
+       <text type="string" />
+       <time type="integer" />
+     </content>
+     <currentstep type="string" />
+     <videurl type="string" bidirectional="true"/>
+   </viewmodel>
+ </rsb>
+ </config>

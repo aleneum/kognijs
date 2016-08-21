@@ -9,40 +9,57 @@ function KogniConfig(inp) {
   }
 }
 
-KogniConfig.prototype.init = function(callback) {
-  if (this.url) {
-    var _this = this;
-    KogniConfig.loadXMLasJSON({
-      url: this.url,
-      callback: function(json) {
-        _this.json = json.config;
-        callback();
-      },
-    });
+KogniConfig.prototype.init = function(params, callback) {
+  if (typeof params === "function") {
+    callback = params;
+    params = {}
   } else {
-      callback();
+    params = params || {}
+  }
+
+  if (this.url || params.url) {
+    params.url = params.url || this.url;
+    params.checkTagConsistency = true;
+    params.explicitArray = ['widget'];
+    var _this = this;
+    params.callback = function(err, res) {
+      if (err) {
+        callback(err);
+      } else {
+        _this.json = res.config;
+        callback();
+      }
+    };
+    KogniConfig.loadXMLasJSON(params);
+  } else if (this.json) {
+    callback();
+  } else {
+    callback(Error('Neither a URL nor a json configuration have been passed!'));
   }
 };
 
 KogniConfig.loadXMLasJSON = function(params) {
-  var opts = params || {},
+  var params = params || {},
       url = params.url || 'data/config.xml',
-      trim = opts.trim || true,
-      explicitArray = opts.explicitArray || false,
-      unifyArray = (explicitArray == 'unify'),
+      trim = params.trim || true,
+      checkTagConsistency = params.checkTagConsistency || false,
+      explicitArray = ((! params.explicitArray) || Array.isArray(params.explicitArray)) ? false : params.explicitArray,
+      arrayTags = (Array.isArray(params.explicitArray)) ? params.explicitArray : [],
       xhttp = new XMLHttpRequest();
-
-  if (unifyArray) explicitArray = false;
 
   xhttp.onreadystatechange = function() {
   if (xhttp.readyState==4 && xhttp.status==200) {
     parseString(xhttp.responseText, {trim: trim, explicitArray: explicitArray, attrkey: 'attr'},
       function(err, res) {
-        //console.log(xhttp.responseText)
-        if (unifyArray) KogniConfig._unify(res);
-        params.callback(res);
+        if (err) {params.callback(err)};
+        if (checkTagConsistency) {KogniConfig._unify(res)};
+        if (arrayTags.length > 0) {
+          _makeArray(res, arrayTags);
+        }
+        params.callback(undefined, res);
       }
   );}};
+
   xhttp.open("GET",url,true);
   xhttp.send();
 };
@@ -70,7 +87,9 @@ function _makeArray(json, arrs) {
 
 KogniConfig.prototype.get = function(path) {
 	var elems = path.split('.');
-  return traverse(this.json).get(elems);
+  var value = traverse(this.json).get(elems);
+  if (value === undefined) {throw Error('Configuration does not contain an element named ' + path)}
+  return value;
 };
 
 KogniConfig.prototype.has = function(path) {
@@ -79,7 +98,8 @@ KogniConfig.prototype.has = function(path) {
 };
 
 KogniConfig.prototype.set = function(path, value) {
-  traverse(this.json).set(path, value);
+  var elems = path.split('.');
+  traverse(this.json).set(elems, value);
 };
 
 module.exports = KogniConfig;

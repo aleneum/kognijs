@@ -1,24 +1,15 @@
-/**
- * Description
- * @method PointingOverlay
- * @param {} target
- * @param {} callback
- * @return 
- */
+"use strict";
+
 function PointingOverlay(target, callback) {
   this.state = 0; // 0 Unitialized; 1 Running;
   this.target = target;
-  this.id = target.attr('id')
+  this.id = target.getAttribute('id');
   this.callback = callback;
   this.rad = 0;
   this.isDone = false;
 }
 
-/**
- * Description
- * @method trigger
- * @return 
- */
+
 PointingOverlay.prototype.trigger = function () {
   if (this.state == 0) {
     this.setup()
@@ -27,34 +18,26 @@ PointingOverlay.prototype.trigger = function () {
            self.tick();
         }})(this), 100);
     this.state = 1;
-  } else {
-    this.timeout = 5;
-    return;
   }
+  this.timeout = 5;
 }
 
-/**
- * Description
- * @method setup
- * @return 
- */
+
 PointingOverlay.prototype.setup = function () {
   this.rad = 0;
-  this.w = this.target.outerWidth();
-  this.h = this.target.outerHeight();
-  this.pl = this.target.position().left
-  this.pt = this.target.position().top;
-  this.target.append( PointingOverlay.template.format(
-  this.id, this.w, this.h, this.pl, this.pt));
-  this.canvas = $("#timer_"+this.id)[0];
+  this.w = this.target.offsetWidth;
+  this.h = this.target.offsetHeight;
+  this.pl = this.target.offsetLeft;
+  this.pt = this.target.offsetTop;
+
+  var template = document.createElement('template');
+  template.innerHTML = PointingOverlay.template.format(this.id, this.w, this.h, this.pl, this.pt);
+  this.target.appendChild(template.content.firstChild);
+  this.canvas = document.getElementById("timer_"+this.id);
   this.ctx = this.canvas.getContext('2d');
 }
 
-/**
- * Description
- * @method tick
- * @return 
- */
+
 PointingOverlay.prototype.tick = function () {
   if (! this.isDone) {
     this.ctx.clearRect(0,0,this.w, this.h);
@@ -79,6 +62,7 @@ PointingOverlay.prototype.tick = function () {
     clearInterval(this.interval);
   }
 }
+
 
 PointingOverlay.template = "<canvas id=\"timer_{0}\" width=\"{1}px\" height=\"{2}px\" " +
       "class=\"choiceTimer\" style=\"position: absolute; left: {3}px; top:{4}px;\"></canvas>";
