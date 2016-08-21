@@ -9,8 +9,8 @@
       "src/*.js"
   ],
   "dependencies": {
-    "kognijs-rsb":"../kognijs-rsb",
-    "kognijs-animate": "../kognijs-animate",
+    "kognijs-rsb":"*",
+    "kognijs-animate": "*",
     "traverse":"*",
     "xml2js":"*"
   },
