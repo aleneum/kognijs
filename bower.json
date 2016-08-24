@@ -1,6 +1,6 @@
 {
   "name": "kognijs",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "KogniHome Web Toolkit",
   "main": "dist/kognijs.min.js",
   "files": [
