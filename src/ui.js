@@ -38,7 +38,7 @@ KogniUI.prototype.init = function(callback) {
     }
 
     var wuri = _this.config.has('rsb.host') ? _this.config.get('rsb.host') : undefined;
-    if (! wuri) {
+    if (! _this.config.has('rsb')) {
       console.log('No connection in configuration. skip RSB bindings');
       return callback();
     }
