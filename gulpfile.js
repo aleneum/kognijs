@@ -90,7 +90,7 @@ gulp.task('test-travis', function (done) {
 });
 
 gulp.task('test', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   }, function(){done();}).start();

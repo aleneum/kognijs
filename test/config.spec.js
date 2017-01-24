@@ -77,4 +77,14 @@ describe("Macros test", function () {
     }});
   });
 
+  it('should return 404 error', function(done) {
+    Config.loadXMLasJSON({
+      url: 'base/examples/data/not_existing.xml',
+      checkTagConsistency: 'unify',
+      callback: function(err){
+        expect(err).to.be.an('Error');
+        done();
+    }});
+  });
+
 });

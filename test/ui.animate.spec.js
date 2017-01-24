@@ -1,8 +1,28 @@
+
 "use strict";
 
-var connectStub, isConnectedStub, createListenerStub, createInformerStub, getDefaultStub;
-var UI = require('../src/ui.js');
-var RSB = require('kognijs-rsb');
+var proxyquire = require('proxyquire');
+var connectionError = undefined;
+
+function RSBStub() {}
+
+RSBStub.prototype.connect = function(url, callback) {
+  callback(connectionError);
+};
+
+RSBStub.prototype.createListener = function(params) {
+  if (params.scope.endsWith('pointing')) {params.callback({x: 50, y: 50});}
+  else if (params.scope.endsWith('/html')) {params.callback('FooBar');}
+  else if (params.scope.endsWith('/canvas')) {params.callback('ctx.fillText("Hello world", 10, 50);');}
+  else if (params.scope.endsWith('content/text')) {params.callback('FooBar');}
+  else if (params.scope.endsWith('/bar')) {params.callback('FooBar');}
+};
+
+RSBStub.prototype.createInformer = function(params) { return {}; };
+
+RSBStub.getDefault = function(type) { return "stub"; };
+
+var UI = proxyquire('../src/ui.js', {'kognijs-rsb': RSBStub });
 
 var contentHTML = '<div id="canvasArea"></div>' +
   '<div style="position: absolute; top: 0px; left:0px; width: 200px; height:200px;" id="contentArea"></div>';
@@ -22,19 +42,6 @@ describe("UI", function () {
       contentHTML
     );
     this.sinon = sinon.sandbox.create();
-    connectStub = this.sinon.stub(RSB.prototype, 'connect', function(url, callback){
-      callback();
-    });
-    isConnectedStub = this.sinon.stub(RSB.prototype, 'isConnected', function() { return true; });
-    createListenerStub = this.sinon.stub(RSB.prototype, 'createListener', function(params) {
-      if (params.scope.endsWith("/scope")) {
-        params.callback({text:'FooBar'})
-      } else if (params.scope.endsWith('/bar')) {
-        params.callback('FooBar');
-      }
-    });
-    createInformerStub = this.sinon.stub(RSB.prototype, 'createInformer', function() {return {}});
-    getDefaultStub = this.sinon.stub(RSB, 'getDefault', function(type) {return 'stub'});
   });
 
   afterEach(function(){

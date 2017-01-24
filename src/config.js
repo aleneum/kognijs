@@ -40,25 +40,30 @@ KogniConfig.prototype.init = function(params, callback) {
 
 KogniConfig.loadXMLasJSON = function(params) {
   var params = params || {},
-      url = params.url || 'data/config.xml',
-      trim = params.trim || true,
-      checkTagConsistency = params.checkTagConsistency || false,
-      explicitArray = ((! params.explicitArray) || Array.isArray(params.explicitArray)) ? false : params.explicitArray,
-      arrayTags = (Array.isArray(params.explicitArray)) ? params.explicitArray : [],
-      xhttp = new XMLHttpRequest();
+    url = params.url || 'data/config.xml',
+    trim = params.trim || true,
+    checkTagConsistency = params.checkTagConsistency || false,
+    explicitArray = ((! params.explicitArray) || Array.isArray(params.explicitArray)) ? false : params.explicitArray,
+    arrayTags = (Array.isArray(params.explicitArray)) ? params.explicitArray : [],
+    xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function() {
-  if (xhttp.readyState==4 && xhttp.status==200) {
-    parseString(xhttp.responseText, {trim: trim, explicitArray: explicitArray, attrkey: 'attr'},
-      function(err, res) {
-        if (err) {params.callback(err)};
-        if (checkTagConsistency) {KogniConfig._unify(res)};
-        if (arrayTags.length > 0) {
-          _makeArray(res, arrayTags);
-        }
-        params.callback(undefined, res);
+    if (xhttp.readyState==4) {
+      if (xhttp.status==200) {
+        parseString(xhttp.responseText, {trim: trim, explicitArray: explicitArray, attrkey: 'attr'},
+          function(err, res) {
+            if (err) {params.callback(err)};
+            if (checkTagConsistency) {KogniConfig._unify(res)};
+            if (arrayTags.length > 0) {
+              _makeArray(res, arrayTags);
+            }
+            params.callback(undefined, res);
+          }
+        );
+      } else {
+        params.callback(Error("File loading error:", xhttp.status));
       }
-  );}};
+    }};
 
   xhttp.open("GET",url,true);
   xhttp.send();
@@ -77,23 +82,23 @@ KogniConfig._unify = function(json) {
 function _makeArray(json, arrs) {
   traverse(json).forEach(function(val){
     if (arrs.indexOf(this.key) !== -1) {
-        if (! Array.isArray(val)) {
-          this.update([val]);
-          _makeArray(val, arrs);
-        }
+      if (! Array.isArray(val)) {
+        this.update([val]);
+        _makeArray(val, arrs);
+      }
     }
   });
 }
 
 KogniConfig.prototype.get = function(path) {
-	var elems = path.split('.');
+  var elems = path.split('.');
   var value = traverse(this.json).get(elems);
   if (value === undefined) {throw Error('Configuration does not contain an element named ' + path)}
   return value;
 };
 
 KogniConfig.prototype.has = function(path) {
-	var elems = path.split('.');
+  var elems = path.split('.');
   return traverse(this.json).has(elems);
 };
 

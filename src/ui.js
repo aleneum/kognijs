@@ -12,7 +12,6 @@ try {
   Animate = null;
 }
 
-
 function KogniUI(configPath, model) {
   this.configPath = configPath || undefined;
   this.model = model || undefined;
@@ -292,3 +291,12 @@ module.exports = KogniUI;
 
 var CANVAS_TEMPLATE = "<canvas id=\"{0}_canvas\" width=\"{1}px\" height=\"{2}px\" " +
           "style=\"position: absolute; left: {3}px; top: {4}px;\"></canvas>"
+
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined' ? args[number] : match;
+    });
+  };
+}
