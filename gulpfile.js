@@ -96,7 +96,7 @@ gulp.task('test', function (done) {
   }, function(){done();}).start();
 });
 
-gulp.task('build-redist', function() {
+gulp.task('build-redist-minified', function() {
   return browserify([
         'src/main.js'
       ],  {
@@ -106,6 +106,18 @@ gulp.task('build-redist', function() {
       .pipe(source('kognijs.min.js'))
       .pipe(buffer())
       .pipe(uglify())
+      .pipe(gulp.dest('redist/'));
+});
+
+gulp.task('build-redist', ['build-redist-minified'], function() {
+  return browserify([
+        'src/main.js'
+      ],  {
+        debug: !production,
+      })
+      .bundle()
+      .pipe(source('kognijs.js'))
+      .pipe(buffer())
       .pipe(gulp.dest('redist/'));
 });
 
