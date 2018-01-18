@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Kogni.JS - RSB</title>
+  <script src="https://cdn.rawgit.com/aleneum/kognijs/master/redist/kognijs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+  <h1>This is just a test page</h1>
+
+  <div id="app">
+    {{ videourl }}
+  </div>
+
+  <script type="text/javascript">
+    window.onload = function() {
+      model = {}
+      var ui = new KogniJS.UI('test.xml', model)
+      ui.init(function() {
+        window.app = new Vue({
+          el: '#app',
+          data: ui.model
+        })
+        ui.modelObservers.forEach(function(ob) {
+          window.app.$watch(ob.target.join('.'), function(newVal, oldVal) {
+            ob.informer.publish(newVal);
+          }, {deep: true});
+        });
+        window.ui = ui;
+      })
+    }
+  </script>
+</body>
+</html>
