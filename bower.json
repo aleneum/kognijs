@@ -1,8 +1,8 @@
 {
   "name": "kognijs",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "KogniHome Web Toolkit",
-  "main": "dist/kognijs.min.js",
+  "main": "dist/kognijs.js",
   "files": [
       "src/*.js"
   ],

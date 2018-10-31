@@ -5,7 +5,7 @@
     localhost:8181
    </host>
    <prefix>
-     /kognichef/io/display
+     /kognijs/io/display
    </prefix>
    <pointing>
      <path>pointing</path>
@@ -38,7 +38,7 @@
   <widgetList>
     <widget>
       <scope>/example/scope</scope>
-      <type>base/examples/data/widget.xml</type>
+      <type>data/widget.xml</type>
       <value>string</value>
     </widget>
   </widgetList>

@@ -16,7 +16,7 @@
 
   This is all the js code required to set up the basic user interface helpers. Even though kognijs.ui can be configured
   programmatically, it is recommended to use the configuration.xml to do so.
-
+  Have a look at <a href="data/tour.xml">tour.xml</a> which is used in this example.
 
   ```javascript
   model = {} # empty model
@@ -66,13 +66,23 @@
 
  ### Remote HTML Content
  <div id="contentArea">
-   Just some text
+   This area is editable. The content can be changed by sending HTML markup to `/kognijs/io/display/contentArea/html`
  </div>
 
  ### Remote Canvas (via JS)
- <div id="canvasArea"></div>
+ The canvas context is available as `ctx`.
+ Code send to `/kognijs/io/display/canvasArea/canvas` will be executed.
+ E.g. to draw a rectangle just send `ctx.fillRect(20,20,150,100) `.
+ This feature should only be used in trusted environments.
+ <div id="canvasArea">
+ </div>
 
  ### KogniJS + Vue = MVVM Sweetness
+ Sending values smaller than 0 to `/temperature` will apply the 'cold' style defined in the style.css to the Vue element 'Temp Status'.
+ Values of 35 and above use the style 'hot'.
+ Altering the boolean value of `/kognijs/io/display/model/ready` will change the shown icon below.
+ The protocol buffer specification `rst.math.Vec2DFloat` can be used to send simulated click events on this page.
+
  <div id="vueArea">
 
    <h4> Dynamic Class Assignment </h4>
@@ -88,15 +98,12 @@
 
 </xmp>
 
-
-
-
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
 <script type="text/javascript">
   function onLoad(ui, $, Vue) {
-    ui.init(function() {
-      window.ui = ui;
-      console.log(ui);
+    ui.init(function(err) {
+      window.kognijs = ui;
+      if (err) { return }
       var rsbStatus = $("#rsbIsConnected");
       rsbStatus.remove();
       createInspector({el: "#vueAreaTable", data: ui.model});
