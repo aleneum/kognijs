@@ -9,6 +9,11 @@
   "files": [
     "src/*.js"
   ],
+  "scripts": {
+    "build": "gulp build-redist",
+    "dev": "gulp serve",
+    "test":  "gulp test"
+  },
   "dependencies": {
     "jquery": "*",
     "kognijs-animate": "*",
@@ -22,7 +27,7 @@
     "browserify-istanbul": "*",
     "browserify-optional": "*",
     "chai": "*",
-    "gulp": "*",
+    "gulp": "^4.0.0",
     "gulp-rename": "*",
     "gulp-uglify": "*",
     "karma": "*",

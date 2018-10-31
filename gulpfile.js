@@ -14,24 +14,6 @@ var Server = require('karma').Server;
 
 var production = (process.env.NODE_ENV === 'production');
 
-gulp.task('default', ['serve']);
-
-gulp.task('serve', ['build-vendor', 'build-tour', 'browser-sync'], function () {
-  gulp.watch('src/**/*.js', ['build-tour', reload]);
-  gulp.watch('examples/*.html', reload);
-  gulp.watch('tests/*.html', reload);
-});
-
-gulp.task('browser-sync', function() {
-  browserSync({
-    open: false,
-    server: {
-      baseDir: ["examples", "dist", "test"],
-      index: "tour.html"
-    },
-  });
-});
-
 gulp.task('build-vendor', function () {
 
   var b = browserify({
@@ -82,6 +64,22 @@ gulp.task('build-tour', function () {
   return stream;
 });
 
+gulp.task('browser-sync', function() {
+  browserSync({
+    open: false,
+    server: {
+      baseDir: ["examples", "dist", "test"],
+      index: "tour.html"
+    },
+  });
+});
+
+gulp.task('serve', gulp.series('build-vendor', 'build-tour', 'browser-sync', function () {
+  gulp.watch('src/**/*.js', ['build-tour', reload]);
+  gulp.watch('examples/*.html', reload);
+  gulp.watch('tests/*.html', reload);
+}));
+
 gulp.task('test-travis', function (done) {
   new Server({
     configFile: __dirname + '/karma.travis.conf.js',
@@ -109,7 +107,7 @@ gulp.task('build-redist-minified', function() {
       .pipe(gulp.dest('redist/'));
 });
 
-gulp.task('build-redist', ['build-redist-minified'], function() {
+gulp.task('build-redist', gulp.series('build-redist-minified', function() {
   return browserify([
         'src/main.js'
       ],  {
@@ -119,7 +117,7 @@ gulp.task('build-redist', ['build-redist-minified'], function() {
       .pipe(source('kognijs.js'))
       .pipe(buffer())
       .pipe(gulp.dest('redist/'));
-});
+}));
 
 /**
  * Helper function(s)
@@ -133,5 +131,6 @@ function getNPMPackageIds() {
     // does not have a package.json manifest
   }
   return _.keys(packageManifest.dependencies) || [];
-
 }
+
+gulp.task('default', gulp.parallel('serve'));
