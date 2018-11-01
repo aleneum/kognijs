@@ -8,7 +8,7 @@ module.exports = function(config) {
     frameworks: ['mocha', 'sinon-chai', 'browserify'],
     files: [
       {pattern: 'examples/data/*.xml', watched: true, included: false, served: true},
-      'test/**/*.spec.js'
+      {pattern: 'test/**/*.spec.js'}
     ],
     preprocessors: {
       'src/*.js': ['coverage'],

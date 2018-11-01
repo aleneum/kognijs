@@ -14,14 +14,14 @@ describe("Macros test", function () {
     var config = new Config(object);
     expect(config.url).to.be.an('undefined');
     expect(config.json).to.be.an('object');
-    expect(config.has('rsb.prefix')).to.be.True;
+    expect(config.has('rsb.prefix')).to.be.true;
     expect(config.get('rsb.prefix')).to.be.equal('/test/scope');
     config.set('rsb.prefix', '/test');
     expect(config.get('rsb.prefix')).to.be.equal('/test');
-    expect(config.has('not.exisiting')).to.be.False;
+    expect(config.has('not.exisiting')).to.be.false;
 
     config.set('not.exisiting', '1');
-    expect(config.has('not.exisiting')).to.be.True;
+    expect(config.has('not.exisiting')).to.be.true;
     config.init(function() {
       done();
     })
@@ -29,7 +29,7 @@ describe("Macros test", function () {
 
   it('should thrown when trying to access not existing data', function(){
     var config = new Config({a:{}});
-    expect(config.has('a.value')).to.be.False;
+    expect(config.has('a.value')).to.be.false;
     expect(function(){config.get('a.value')}).to.throw(Error);
   });
 

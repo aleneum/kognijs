@@ -24,10 +24,10 @@ describe("Pointing", function () {
     var overlay = new PointingOverlay(elem, undefined);
     overlay.trigger();
     expect(overlay.state).to.be.equal(1);
-    expect(overlay.timeout > 0).to.be.True;
+    expect(overlay.timeout > 0).to.be.true;
     setTimeout(function() {
       expect(overlay.state).to.be.equal(0);
-      expect(overlay.timeout < 0).to.be.True;
+      expect(overlay.timeout < 0).to.be.true;
       done();
     }, 1000);
   });

@@ -21,7 +21,7 @@ Now, clone the repository, install all dependencies and fire up the test server.
 git clone https://github.com/aleneum/kognijs.git
 cd kognijs
 npm install
-gulp serve
+npm run dev  # starts test server
 ```
 
 Now open your browser at [localhost:3000](http://localhost:3000) to start the tour and start sending RSB events from the command line.

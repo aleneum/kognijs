@@ -41,7 +41,7 @@ describe("UI", function () {
       'afterbegin',
       contentHTML
     );
-    this.sinon = sinon.sandbox.create();
+    this.sinon = sinon.createSandbox();
   });
 
   afterEach(function(){
