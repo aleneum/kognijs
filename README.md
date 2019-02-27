@@ -26,3 +26,7 @@ npm run dev  # starts test server
 
 Now open your browser at [localhost:3000](http://localhost:3000) to start the tour and start sending RSB events from the command line.
 For instance `rsb-tools send '"hello"' /kognijs/io/display/contentArea/html` should reset the content in the 'Remote HTML Content' section.
+
+## Acknowledgements
+
+The development of this software was supported through project grants [KogniHome](kogni-home.de) (German Federal Ministry of Education and Research (BMBF) grant no. 16SV7054K) at Bielefeld University.
